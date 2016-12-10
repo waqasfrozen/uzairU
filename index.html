@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="mobile-web-app-capable" content="yes">
+    <!-- Your app title -->
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700' rel='stylesheet' type='text/css'>
+    <!-- Path to Framework7 Library CSS, Material Theme -->
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <!-- Path to Framework7 color related styles, Material Theme -->
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <link rel="stylesheet" href="font/flaticon.css">
+	<link rel="stylesheet" href="css/swipebox.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/my-app.css">
+    <style>
+        .col{
+            float: left;
+        }
+        .s9{
+            width:100%
+        }
+        .s9{
+           width:75%
+        }
+        .s3{
+            width:25%
+        }
+    </style>
+</head>
+
+<body class="theme-blue">
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div style="" class="panel panel-left panel-cover">
+		<div data-page="panel-left" class="view navbar-fixed">
+			<div class="pages">
+				<div data-page="panel-left" class="page">
+					<div class="navbar">
+						<div class="navbar-inner">
+							<div class="center">Menu</div>
+						</div>
+					</div>
+					<div class="page-content">
+						<div class="content-block-title">Browse menu</div>
+						<div class="list-block">
+							<ul>
+                                <li>
+                                    <a href="places.html" class="item-link close-panel">
+                                        <div class="item-content">
+                                            <div class="item-media"><i class="flaticon-home"></i></div>
+                                            <div class="item-inner">
+                                                <div class="item-title text-small">View Locations</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <!-- Views -->
+    <div class="views">
+        <!-- Your main view, should have "view-main" class -->
+        <div class="view view-main">
+            <!-- Pages container, because we use fixed navbar and toolbar, it has additional appropriate classes-->
+            <div class="pages">
+                <!-- Page, "data-page" contains page name -->
+                <div data-page="index" class="page">
+                    <!-- Scrollable page content -->
+                    <div class="page-content bg-home">
+                        <div class="overlay"></div>
+						<div class="content-block text-center">
+							<!--<img class="logo" src="img/logo.png" alt="Galaxy">-->
+							<div class="offset-bottom-75"></div>
+							<h4>Welcome!</h4>
+							<div class="slogan">Simple Tourguide App.</div>
+						</div>
+						<div class="home-footer">
+							<!--<a href="login.html" id="login">Login</a>-->
+							<!--<a href="register.html" id="signup">Sign up</a>-->
+						</div>file:///root/Downloads/uzair.sql
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+	<script type="text/javascript" src="js/jquery.swipebox.js"></script>
+    <script type="text/javascript" src="js/jquery.fitvids.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/my-app.js"></script>
+    <script>
+        //var pathToServer = "http://devlabx.com/uzairT/index.php/home/android";
+        var pathToServer = "http://127.0.0.1/uzair/index.php/home/android";
+        var locationss,long,lat;
+        function getCordinates(){
+            $.post(pathToServer+"/getLocationUser",{},function(e){
+                locationss = IsJsonString(e);
+                console.log(e);
+                if(locationss == true){
+                    locationss = JSON.parse(e);
+                    initialize();
+                }
+            });
+        }
+        function getPlaces(){
+            $.post(pathToServer+"/getLocationDataUser",{},function(e){
+                $("#places").html(e);
+            });
+        }
+        function addPlace(){
+            var name = $("#name").val();
+            var subtitle = $("#subtitle").val();
+            var desc = $("#desc").val();
+            var type = $("#type").val();
+            var mobile = $("#mobile").val();
+            var long = $("#long").val();
+            var lat = $("#lat").val();
+            $.post(pathToServer+"/addLocation",{long:long,lat:lat,mobile:mobile,title:name,subtitle:subtitle,desc:desc,type:type},function(e){
+                if(e == "true" || e == true){
+                    $("#name").val('');
+                    $("#subtitle").val('');
+                    $("#desc").val('');
+                    $("#type").val('');
+                    $("#mobile").val('');
+                    $("#error").html("Added Successfuly");
+                }
+            });
+        }
+        function IsJsonString(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
+        function loadThat(id){
+            $.post(pathToServer+"/getLocationDetailDataUser",{id:id},function(e){
+                setTimeout(function(){
+                    $("#placeDetails").html(e);
+                },1000);
+            });
+        }
+//        function reloadLocation(){
+//            getLocation();
+//        }
+//        function getLocation() {
+//            if (navigator.geolocation) {
+//                navigator.geolocation.getCurrentPosition(showPosition);
+//            } else {
+//                alert("Geolocation is not supported by this device.")
+//            }
+//        }
+//        function showPosition(position) {
+//            long = position.coords.longitude;
+//            lat = position.coords.latitude;
+//            $("#long").val(long);
+//            $("#lat").val(lat);
+//            var latlon = lat + "," + long;
+//            var img_url = "https://www.google.com/maps/embed/v1/place?key=AIzaSyAmWltubueal0heZ8TpeBrT_mIWSEfaFSE&q=" + latlon + "&zoom=18";
+//            $("#ourLocation").attr('src', img_url);
+//            $("#loaading").css('display', "none");
+//
+//        }
+//        function initMap() {
+//            var map = new google.maps.Map(document.getElementById('map'), {
+//                center: {lat: -34.397, lng: 150.644},
+//                zoom: 6
+//            });
+//            var infoWindow = new google.maps.InfoWindow({map: map});
+//            // Try HTML5 geolocation.
+//            if (navigator.geolocation) {
+//                navigator.geolocation.getCurrentPosition(function(position) {
+//                    var pos = {
+//                        lat: position.coords.latitude,
+//                        lng: position.coords.longitude
+//                    };
+//
+//                    infoWindow.setPosition(pos);
+//                    infoWindow.setContent('Location found.');
+//                    map.setCenter(pos);
+//                }, function() {
+//                    handleLocationError(true, infoWindow, map.getCenter());
+//                });
+//            } else {
+//                // Browser doesn't support Geolocation
+//                handleLocationError(false, infoWindow, map.getCenter());
+//            }
+//        }
+//        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+//            infoWindow.setPosition(pos);
+//            infoWindow.setContent(browserHasGeolocation ?
+//                    'Error: The Geolocation service failed.' :
+//                    'Error: Your browser doesn\'t support geolocation.');
+//        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8f0yk2Mn0i227K4CIukRio3F0R0_H2iM"></script>
+    <script>
+        function initialize() {
+            var map;
+            var bounds = new google.maps.LatLngBounds();
+            var mapOptions = {
+                mapTypeId: 'roadmap'
+            };
+
+            map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+            map.setTilt(45);
+
+            var infoWindow = new google.maps.InfoWindow(), marker, i;
+
+            for( i = 0; i < locationss.length; i++ ) {
+                var position = new google.maps.LatLng(locationss[i][0], locationss[i][1]);
+                bounds.extend(position);
+                marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: locationss[i][2]
+                });
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                        infoWindow.setContent(locationss[i][2]);
+                        infoWindow.open(map, marker);
+                    }
+                })(marker, i));
+                map.fitBounds(bounds);
+            }
+            var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+                this.setZoom(8);
+                google.maps.event.removeListener(boundsListener);
+            });
+
+        }
+    </script>
+
+</body>
+</html>
+
