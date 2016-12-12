@@ -33,6 +33,7 @@ $$(document).on('pageInit', function (e) {
     } else if(page.name === 'view_place') {
 		getPlaces();
         //reloadLocation();
+        //reloadLocation();
         getCordinates();
     } else if(page.name === 'remember') {
 		myApp.params.swipePanel = false;
