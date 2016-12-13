@@ -301,13 +301,16 @@ function loadThatNew(id){
         function initMapGet(lat1,long1) {
 
             console.log(parseFloat(lat1));
+            console.log(parseFloat(lat));
+            console.log(parseFloat(long1));
+            console.log(parseFloat(long));
             var chicago = {lat: parseFloat(lat), lng: parseFloat(long)};
             var indianapolis = {lat: parseFloat(lat1), lng: parseFloat(long1)};
 
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: chicago,
                 scrollwheel: false,
-                zoom: 14
+                zoom: 8
             });
 
             var directionsDisplay = new google.maps.DirectionsRenderer({
