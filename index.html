@@ -151,7 +151,7 @@
                 console.log(e);
                 if(locationss == true){
                     locationss = JSON.parse(e);
-                    initialize();
+                    initMap();
                 }
             });
         }
@@ -189,33 +189,38 @@
         }
         function loadThat(id){
             $.post(pathToServer+"/getLocationDetailDataUser",{id:id},function(e){
+                console.log(id);
+                console.log(e);
                 setTimeout(function(){
                     $("#placeDetails").html(e);
-                    $("#owl-example").owlCarousel();
+//                    $("#owl-example").owlCarousel();
                 },1000);
             });
         }
+function loadThatNew(id){
+    $.post(pathToServer+"/getLocationDetailDataUserNew",{id:id},function(e){
+        console.log(id);
+        console.log(e);
+        setTimeout(function(){
+            $("#placeDetail").html(e);
+            $("#owl-example").owlCarousel();
+        },1000);
+    });
+}
 //        function reloadLocation(){
 //            getLocation();
 //        }
-//        function getLocation() {
-//            if (navigator.geolocation) {
-//                navigator.geolocation.getCurrentPosition(showPosition);
-//            } else {
-//                alert("Geolocation is not supported by this device.")
-//            }
-//        }
-//        function showPosition(position) {
-//            long = position.coords.longitude;
-//            lat = position.coords.latitude;
-//            $("#long").val(long);
-//            $("#lat").val(lat);
-//            var latlon = lat + "," + long;
-//            var img_url = "https://www.google.com/maps/embed/v1/place?key=AIzaSyAmWltubueal0heZ8TpeBrT_mIWSEfaFSE&q=" + latlon + "&zoom=18";
-//            $("#ourLocation").attr('src', img_url);
-//            $("#loaading").css('display', "none");
-//
-//        }
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this device.")
+            }
+        }
+        function showPosition(position) {
+            long = position.coords.longitude;
+            lat = position.coords.latitude;
+        }
 //        function initMap() {
 //            var map = new google.maps.Map(document.getElementById('map'), {
 //                center: {lat: -34.397, lng: 150.644},
@@ -250,7 +255,8 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8f0yk2Mn0i227K4CIukRio3F0R0_H2iM"></script>
     <script>
-        function initialize() {
+        function initMap() {
+            console.log(locationss);
             var map;
             var bounds = new google.maps.LatLngBounds();
             var mapOptions = {
@@ -283,6 +289,48 @@
                 google.maps.event.removeListener(boundsListener);
             });
         }
+        //////////////////////////
+        function getMeThere(){
+            getLocation();
+            var lat1 = $("#lat").val();
+            var long1 = $("#long").val();
+            setTimeout(function(){
+                initMapGet(lat1,long1);
+            },1000);
+        }
+        function initMapGet(lat1,long1) {
+
+            console.log(parseFloat(lat1));
+            var chicago = {lat: parseFloat(lat), lng: parseFloat(long)};
+            var indianapolis = {lat: parseFloat(lat1), lng: parseFloat(long1)};
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: chicago,
+                scrollwheel: false,
+                zoom: 14
+            });
+
+            var directionsDisplay = new google.maps.DirectionsRenderer({
+                map: map
+            });
+
+            // Set destination, origin and travel mode.
+            var request = {
+                destination: indianapolis,
+                origin: chicago,
+                travelMode: 'DRIVING'
+            };
+
+            // Pass the directions request to the directions service.
+            var directionsService = new google.maps.DirectionsService();
+            directionsService.route(request, function(response, status) {
+                if (status == 'OK') {
+                    // Display the route on the map.
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        }
+
     </script>
 
 </body>
