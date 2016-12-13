@@ -16,6 +16,9 @@
         The Developers
     </author>
 
+
+
+
     <!--
         If you do not want any permissions to be added to your app, add the
         following tag to your config.xml; you will still have the INTERNET
@@ -64,6 +67,11 @@
     <!--<gap:plugin name="org.apache.cordova.splashscreen" />-->
     <!--<gap:plugin name="org.apache.cordova.vibration" />-->
     <!--<gap:plugin name="org.apache.cordova.core.geolocation" />-->
+
+    <!--<feature name="Geolocation">-->
+        <!--<param name="android-package" value="org.apache.cordova.GeoBroker" />-->
+    <!--</feature>-->
+    <feature name="http://api.phonegap.com/1.0/device" />
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="Geolocation">
         <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
