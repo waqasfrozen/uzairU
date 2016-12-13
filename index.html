@@ -300,10 +300,7 @@ function loadThatNew(id){
         }
         function initMapGet(lat1,long1) {
 
-            console.log(parseFloat(lat1));
-            console.log(parseFloat(lat));
-            console.log(parseFloat(long1));
-            console.log(parseFloat(long));
+            $("#test").html(parseFloat(lat1) + " " + parseFloat(lat) + " " + parseFloat(long1) + " " + parseFloat(long));
             var chicago = {lat: parseFloat(lat), lng: parseFloat(long)};
             var indianapolis = {lat: parseFloat(lat1), lng: parseFloat(long1)};
 
