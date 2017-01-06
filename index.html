@@ -122,7 +122,8 @@
                             <img style="width:50%;opacity: 1;" src="img/logo.png" alt=""/>
 
                             <div class="offset-bottom-75"></div>
-							<h3>Welcome To Karachi!</h3>
+							<h3>Welcome To Karachi</h3>
+							<h3>Tour Guide</h3>
                             <hr/>
 							<!--<div class="slogan">Simple Tourguide App.</div>-->
 						</div>
@@ -256,6 +257,28 @@ function loadThatNew(id){
 //                    'Error: The Geolocation service failed.' :
 //                    'Error: Your browser doesn\'t support geolocation.');
 //        }
+        function contactus(){
+            var name = $("#name").val();
+            var email = $("#email").val();
+            var msg = $("#msg").val();
+            $.post(pathToServer+"/contact",{name:name,email:email,msg:msg},function(e){
+                $("#name").val("");
+                $("#email").val("");
+                $("#msg").val("");
+            });
+        }
+        function bookingg(){
+            var name = $("#name").val();
+            var email = $("#email").val();
+            var number = $("#number").val();
+            var duration = $("#duration").val();
+            $.post(pathToServer+"/booking",{name:name,email:email,number:number,duration:duration},function(e){
+                $("#name").val("");
+                $("#email").val("");
+                $("#number").val("");
+                $("#duration").val("");
+            });
+        }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8f0yk2Mn0i227K4CIukRio3F0R0_H2iM"></script>
     <script>
@@ -334,7 +357,6 @@ function loadThatNew(id){
                 }
             });
         }
-
     </script>
 
 </body>
